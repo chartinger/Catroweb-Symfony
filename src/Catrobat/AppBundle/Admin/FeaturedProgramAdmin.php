@@ -2,14 +2,14 @@
 
 namespace Catrobat\AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Catrobat\AppBundle\Forms\FeaturedImageConstraint;
 use Sonata\CoreBundle\Model\Metadata;
 
-class FeaturedProgramAdmin extends Admin
+class FeaturedProgramAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'adminfeatured_program';
     protected $baseRoutePattern = 'featured_program';

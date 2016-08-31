@@ -10,6 +10,7 @@ use Catrobat\AppBundle\Entity\GameJamRepository;
 use Liip\ThemeBundle\ActiveTheme;
 use Symfony\Component\Intl\Intl;
 
+
 class AppExtension extends \Twig_Extension
 {
 
@@ -38,16 +39,16 @@ class AppExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'countriesList' => new \Twig_Function_Method($this, 'getCountriesList'),
-            'isWebview' => new \Twig_Function_Method($this, 'isWebview'),
-            'checkCatrobatLanguage' => new \Twig_Function_Method($this, 'checkCatrobatLanguage'),
-            'getLanguageOptions' => new \Twig_Function_Method($this, 'getLanguageOptions'),
-            'getMediaPackageImageUrl' => new \Twig_Function_Method($this, 'getMediaPackageImageUrl'),
-            'getMediaPackageSoundUrl' => new \Twig_Function_Method($this, 'getMediaPackageSoundUrl'),
-            'flavor' => new \Twig_Function_Method($this, 'getFlavor'),
-            'theme' => new \Twig_Function_Method($this, 'getTheme'),
-            'getCurrentGameJam' => new \Twig_Function_Method($this, 'getCurrentGameJam'),
-            'getJavascriptPath' => new \Twig_Function_Method($this, 'getJavascriptPath')
+            'countriesList' => new \Twig_SimpleFunction('countriesList', array($this, 'getCountriesList')),
+            'isWebview' => new \Twig_SimpleFunction('isWebview', array($this, 'isWebview')),
+            'checkCatrobatLanguage' => new \Twig_SimpleFunction('checkCatrobatLanguage', array($this, 'checkCatrobatLanguage')),
+            'getLanguageOptions' => new \Twig_SimpleFunction('getLanguageOptions', array($this, 'getLanguageOptions')),
+            'getMediaPackageImageUrl' => new \Twig_SimpleFunction('getMediaPackageImageUrl', array($this, 'getMediaPackageImageUrl')),
+            'getMediaPackageSoundUrl' => new \Twig_SimpleFunction('getMediaPackageSoundUrl', array($this, 'getMediaPackageSoundUrl')),
+            'flavor' => new \Twig_SimpleFunction('flavor', array($this, 'getFlavor')),
+            'theme' => new \Twig_SimpleFunction('theme', array($this, 'getTheme')),
+            'getCurrentGameJam' => new \Twig_SimpleFunction('getCurrentGameJam', array($this, 'getCurrentGameJam')),
+            'getJavascriptPath' => new \Twig_SimpleFunction('getJavascriptPath', array($this, 'getJavascriptPath'))
         );
     }
 

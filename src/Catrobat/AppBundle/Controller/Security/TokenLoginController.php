@@ -4,6 +4,7 @@ namespace Catrobat\AppBundle\Controller\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,7 +32,7 @@ class TokenLoginController extends Controller
             return $this->logout();
         }
         $token = new UsernamePasswordToken($user, null, "main", $user->getRoles());
-        $this->get("security.context")->setToken($token);
+        TokenStorageInterface::setToken($token);
         
         // now dispatch the login event
         $request = $this->get("request");
@@ -42,7 +43,7 @@ class TokenLoginController extends Controller
 
     private function logout()
     {
-        $this->get('security.context')->setToken(null);
+        TokenStorageInterface::setToken(null);
         return $this->redirect($this->generateUrl('index').'?redirect');
     }
 }
