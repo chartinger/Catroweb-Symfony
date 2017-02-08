@@ -80,7 +80,7 @@ var _InternalRemixGraph = function () {
         var edgesData = [];
         var hasGraphCycles = (remixData.remixGraph.catrobatBackwardEdgeRelations.length > 0);
 
-        for (var nodeIndex = 0; nodeIndex < remixData.remixGraph.catrobatNodes.length; nodeIndex++) {
+        for (var nodeIndex = 0; nodeIndex < remixData.remixGraph.catrobatNodes.length; ++nodeIndex) {
             var nodeId = parseInt(remixData.remixGraph.catrobatNodes[nodeIndex]);
             var nodeData = {
                 id: CATROBAT_NODE_PREFIX + "_" + nodeId,
@@ -101,7 +101,7 @@ var _InternalRemixGraph = function () {
             nodesData.push(nodeData);
         }
 
-        for (var nodeIndex = 0; nodeIndex < remixData.remixGraph.scratchNodes.length; nodeIndex++) {
+        for (var nodeIndex = 0; nodeIndex < remixData.remixGraph.scratchNodes.length; ++nodeIndex) {
             var nodeId = parseInt(remixData.remixGraph.scratchNodes[nodeIndex]);
             var unavailableProgramData = { name: remixGraphTranslations.programNotAvailable, username: remixGraphTranslations.programUnknownUser };
             var programData = unavailableProgramData;
@@ -484,7 +484,10 @@ var _InternalRemixGraph = function () {
                         ? self.programDetailsUrlTemplate.replace('0', '')
                         : SCRATCH_PROJECT_BASE_URL;
 
-                    window.location = newUrlPrefix + nodeId + "?rec_by_page_id=" + self.recommendedByPageID + "&rec_by_program_id=" + self.programID;
+                    var queryString = (idParts[0] == CATROBAT_NODE_PREFIX)
+                        ? ("?rec_by_page_id=" + self.recommendedByPageID + "&rec_by_program_id=" + self.programID)
+                        : "";
+                    window.location = newUrlPrefix + nodeId + queryString;
                 }
             };
         }

@@ -141,7 +141,7 @@
             <table>
               <tr>
                 <td><i class="fa fa-sitemap" aria-hidden="true" style="font-size: 40px"></i></td>
-                <td>{{ "remixgraph.showRemixGraph"|trans({}, "catroweb") }}</td>
+                <td>{{ "remixGraph.showRemixGraph"|trans({}, "catroweb") }}</td>
               </tr>
             </table>
           </button>
@@ -298,7 +298,7 @@
 
   {% if program_details.languageVersion >= 0.97 %}
     <div class="show-hide-code">
-      <div class="show-hide-code-text">Show code</div>
+      <div class="show-hide-code-text">SHOW CODE</div>
       <div class="show-hide-code-arrow">
         <img src="{{ asset('./images/symbols/codeview_arrow_down.png') }}">
       </div>
@@ -360,6 +360,16 @@
       </div>
 
       {% endif %}
+    {% endif %}
+
+    {% if not ("RU" in app.request.locale) and not ("ru" in app.request.locale) %}
+      {# NOTE: A/B testing -> this section is NOT shown to Russian users at the moment #}
+      <div id="specific-programs-recommendations">
+        <div id="recsys-specific-programs-headline">
+          <h2>{{ 'recommender.mostDownloadedProgramsOfUsersThatAlsoDownloadedOtherPrograms'|trans({}, 'catroweb') }}</h2>
+        </div>
+        <div class="programs"></div>
+      </div>
     {% endif %}
 
   <div id="comment-successfully-reported">
@@ -469,24 +479,38 @@
     var recs = new ProgramLoader('#recommendations', '{{ path('api_recsys_programs') }}', undefined, programID);
     recs.initRecsys();
 
+    var recommendedByPageId = {{ constant('Catrobat\\AppBundle\\RecommenderSystem\\RecommendedPageId::PROGRAM_DETAIL_PAGE') }};
+    var specificRecommender = new ProgramLoader('#specific-programs-recommendations', '{{ path('api_recsys_specific_programs', { 'id': program.id }) }}', undefined, programID, recommendedByPageId);
+    specificRecommender.initSpecificRecsys();
+
     counter = 10;
     var cachedRemixData = null;
     var remixGraphTranslations = {
       ok: "{{ "ok"|trans({}, "catroweb") }}",
-      by: "{{ "remixgraph.by"|trans({}, "catroweb") }}",
-      open: "{{ "remixgraph.open"|trans({}, "catroweb") }}",
-      showPaths: "{{ "remixgraph.showPaths"|trans({}, "catroweb") }}",
-      programNotAvailableErrorTitle: "{{ "remixgraph.programNotAvailableErrorTitle"|trans({}, "catroweb") }}",
-      programNotAvailableErrorDescription: "{{ "remixgraph.programNotAvailableErrorDescription"|trans({}, "catroweb") }}",
-      programNotAvailable: "{{ "remixgraph.programNotAvailable"|trans({}, "catroweb") }}",
-      programUnknownUser: "{{ "remixgraph.programUnknownUser"|trans({}, "catroweb") }}"
+      by: "{{ "remixGraph.by"|trans({}, "catroweb") }}",
+      open: "{{ "remixGraph.open"|trans({}, "catroweb") }}",
+      showPaths: "{{ "remixGraph.showPaths"|trans({}, "catroweb") }}",
+      programNotAvailableErrorTitle: "{{ "remixGraph.programNotAvailableErrorTitle"|trans({}, "catroweb") }}",
+      programNotAvailableErrorDescription: "{{ "remixGraph.programNotAvailableErrorDescription"|trans({}, "catroweb") }}",
+      programNotAvailable: "{{ "remixGraph.programNotAvailable"|trans({}, "catroweb") }}",
+      programUnknownUser: "{{ "remixGraph.programUnknownUser"|trans({}, "catroweb") }}"
     };
 
     var PROGRAM_LIKE_TYPE_NONE = {{ constant('Catrobat\\AppBundle\\Entity\\ProgramLike::TYPE_NONE') }};
 
+    function convertToHumanFriendlyNumberText(number) {
+        if (number >= 10000) {
+            return (number / 1000.0).toFixed(0) + "k";
+        } else if (number >= 1000) {
+            return (number / 1000.0).toFixed(1).replace(".0", "") + "k";
+        } else {
+            return number;
+        }
+    }
+
     function updateLikeCount(likeType, likeTypeCount, totalLikeCount) {
         $("a.program-like-button").removeClass("selected");
-        $("#program-like-buttons-container > .program-like-counter").text(totalLikeCount);
+        $("#program-like-buttons-container > .program-like-counter").text(convertToHumanFriendlyNumberText(totalLikeCount));
         if (likeType == PROGRAM_LIKE_TYPE_NONE) {
             $("#program-like-detail-container").html("&nbsp;");
             return;
@@ -495,17 +519,17 @@
         likeTypeButton.addClass("selected");
         var singularOrPlural = (likeTypeCount == 1) ? true : false;
         var translatedDetailSpanTextTemplate = likeTypeButton.children(singularOrPlural ? ".singular" : ".plural")[0];
-        var replaceCount = '<span class="program-like-counter">' + likeTypeCount + '<span>';
+        var replaceCount = '<span class="program-like-counter">' + convertToHumanFriendlyNumberText(likeTypeCount) + '<span>';
         var translatedDetailText = translatedDetailSpanTextTemplate.innerHTML.replace((singularOrPlural ? "1" : "2"), replaceCount);
         $("#program-like-detail-container").html(translatedDetailText);
     }
 
     $(document).ready(function() {
       var loadingAnimation = new LoadingAnimation('#FFFFFF', "{{ "pleaseWait"|trans({}, "catroweb") }}");
-      var recommendedByPageId = {{ constant('Catrobat\\AppBundle\\RecommenderSystem\\RecommendedPageId::PROGRAM_DETAIL_PAGE') }};
+      var recommendedByRemixGraphPageId = {{ constant('Catrobat\\AppBundle\\RecommenderSystem\\RecommendedPageId::PROGRAM_DETAIL_PAGE_REMIX_GRAPH') }};
       var remixGraph = RemixGraph.getInstance();
-      remixGraph.init(programID, recommendedByPageId, "remix-graph-modal", "remix-graph-layer", "close-button",
-          "{{ program_details_url_template }}", "../click-statistic", remixGraphTranslations);
+      remixGraph.init(programID, recommendedByRemixGraphPageId, "remix-graph-modal", "remix-graph-layer", "close-button",
+          "{{ program_details_url_template }}", "{{ path('click_stats') }}", remixGraphTranslations);
 
       updateLikeCount({{ program_details.likeType }}, {{ program_details.likeTypeCount }}, {{ program_details.totalLikeCount }});
 
@@ -756,10 +780,15 @@
         else if (href.indexOf("program") > 0) {
           type = "programs";
           additions = (href.match(/[0-9]+/))[0];
+
+          var containerElement = $(this).parent(".program").parent(".programs").parent();
+          if (containerElement.attr("id") == "specific-programs-recommendations") {
+              type = "rec_specific_programs";
+          }
         }
 
         $.ajaxSetup({async: false});
-        $.post( "../click-statistic", {type: type, recFromID: {{ program.id }}, recID: additions}, function( data ) {
+        $.post("{{ path('click_stats') }}", {type: type, recFromID: {{ program.id }}, recID: additions}, function( data ) {
           if (data == 'error')
             console.log("No click statistic is created!");
         }).fail(function (data) {
