@@ -28,7 +28,7 @@ When the Request is invoked
  
 Then the returned json object will be:
 
-```json
+```
 {
   "projectId": "1",
   "statusCode": 200,
