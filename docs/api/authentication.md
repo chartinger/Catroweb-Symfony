@@ -24,7 +24,8 @@ And we assume the next generated token will be "`rrrrrrrrrrr`"
 When the Request is invoked
  
 Then the returned json object will be:
-```json
+
+```
 {
   "token": "rrrrrrrrrrr",
   "statusCode": 201,
@@ -46,7 +47,8 @@ Given the registration problem "`<problem>`"
 When such a Request is invoked
  
 Then the returned json object will be:
-```json
+
+```
 {
   "statusCode": "<errorcode>",
   "answer": "<answer>",
@@ -64,7 +66,6 @@ Then the returned json object will be:
 ---
 
 ## Retrieve the upload token of a user
-> 
 
 Given the HTTP Request:
 
@@ -96,7 +97,6 @@ Then the returned json object will be:
 ---
 
 ## Checking a given token for its validity
-> 
 
 Given the HTTP Request:
 
@@ -114,7 +114,8 @@ And the POST parameters:
 When the Request is invoked
  
 Then the returned json object will be:
-```json
+
+```
 {
   "statusCode": 200,
   "answer": "ok",
@@ -130,14 +131,15 @@ And the response code will be "`200`"
 ---
 
 ## Troubleshooting
-> 
+
 
 Given the check token problem "`<problem>`"
  
 When such a Request is invoked
  
 Then the returned json object will be:
-```json
+
+```
 {
   "statusCode": "<errorcode>",
   "answer": "<answer>",
@@ -150,6 +152,7 @@ And the response code will be "`<httpcode>`"
  
 
 ### Examples
+
 | problem | errorcode | answer | httpcode |
 | --- | --- | --- | --- |
 | invalid token | 601 | Authentication of device failed: invalid auth-token! | 401 |
