@@ -18,7 +18,7 @@ default:
                 index: markdown-index.twig
             output:
                 index: README
-                dir: ./doc/current/
+                dir: ./docs/api/
                 scope: feature
                 extension: md 
 
