@@ -83,6 +83,7 @@ And the POST parameters:
 When the Request is invoked
  
 Then the returned json object will be:
+
 ```json
 {
   "token": "cccccccccc",
