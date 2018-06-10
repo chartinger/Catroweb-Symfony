@@ -27,8 +27,7 @@ And we assume the next generated token will be "`rrrrrrrrrrr`"
 When the Request is invoked
  
 Then the returned json object will be:
-
-```
+```json
 {
   "projectId": "1",
   "statusCode": 200,
@@ -44,13 +43,13 @@ Then the returned json object will be:
 ---
 
 ## Troubleshooting
+> 
 
 Given the upload problem "`<problem>`"
  
 When such a Request is invoked
  
 Then the returned json object will be:
-
 ```json
 {
   "statusCode": "<errorcode>",
@@ -62,7 +61,6 @@ Then the returned json object will be:
  
 
 ### Examples
-
 | problem | errorcode | answer |
 | --- | --- | --- |
 | no authentication | 601 | Authentication of device failed: invalid auth-token! |
