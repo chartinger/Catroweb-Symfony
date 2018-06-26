@@ -14,10 +14,11 @@ default:
             autoload:    false
         Catrobat\Behat\TwigReportExtension:
             templates:
+                dir: ./doc/src/Templates/
                 file: markdown-feature.twig
                 index: markdown-index.twig
             output:
-                index: README
+                index: index
                 dir: ./docs/api/
                 scope: feature
                 extension: md 

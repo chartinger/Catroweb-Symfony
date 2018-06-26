@@ -57,6 +57,7 @@ Then the returned json object will be:
  
 
 ### Examples
+
 | problem | errorcode | answer |
 | --- | --- | --- |
 | no password given | 602 | The password is missing. |
@@ -150,6 +151,7 @@ And the response code will be "`<httpcode>`"
  
 
 ### Examples
+
 | problem | errorcode | answer | httpcode |
 | --- | --- | --- | --- |
 | invalid token | 601 | Authentication of device failed: invalid auth-token! | 401 |

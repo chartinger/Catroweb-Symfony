@@ -61,6 +61,7 @@ Then the returned json object will be:
  
 
 ### Examples
+
 | problem | errorcode | answer |
 | --- | --- | --- |
 | no authentication | 601 | Authentication of device failed: invalid auth-token! |
