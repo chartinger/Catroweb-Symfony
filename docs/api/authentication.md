@@ -1,16 +1,12 @@
 # Authenticate to the system
 > How to register and login to the system
 
-## Registration of a new user
+## New Registration of a new user
 > 
 
-Given the HTTP Request:
-
-| Method | POST |
-| --- | --- |
-| Url | /pocketcode/api/loginOrRegister/loginOrRegister.json |
-   
-And the POST parameters:
+Given the next generated token will be "`rrrrrrrrrrr`"
+ 
+When I POST the following parameters to "`/pocketcode/api/loginOrRegister/loginOrRegister.json`":
 
 | Name | Value |
 | --- | --- |
@@ -19,10 +15,6 @@ And the POST parameters:
 | registrationEmail | test@mail.com |
 | registrationCountry | at |
    
-And we assume the next generated token will be "`rrrrrrrrrrr`"
- 
-When the Request is invoked
- 
 Then the returned json object will be:
 ```json
 {
@@ -67,21 +59,13 @@ Then the returned json object will be:
 ## Retrieve the upload token of a user
 > 
 
-Given the HTTP Request:
-
-| Method | POST |
-| --- | --- |
-| Url | /pocketcode/api/loginOrRegister/loginOrRegister.json |
-   
-And the POST parameters:
+When I POST the following parameters to "`/pocketcode/api/loginOrRegister/loginOrRegister.json`":
 
 | name | value |
 | --- | --- |
 | registrationUsername | Catrobat |
 | registrationPassword | 12345 |
    
-When the Request is invoked
- 
 Then the returned json object will be:
 ```json
 {
@@ -99,21 +83,13 @@ Then the returned json object will be:
 ## Checking a given token for its validity
 > 
 
-Given the HTTP Request:
-
-| Method | POST |
-| --- | --- |
-| Url | /pocketcode/api/checkToken/check.json |
-   
-And the POST parameters:
+When I POST the following parameters to "`/pocketcode/api/checkToken/check.json`":
 
 | Name | Value |
 | --- | --- |
 | username | Catrobat |
 | token | cccccccccc |
    
-When the Request is invoked
- 
 Then the returned json object will be:
 ```json
 {

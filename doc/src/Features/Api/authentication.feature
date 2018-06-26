@@ -9,18 +9,14 @@ Feature: Authenticate to the system
       | User1    | vwxyz    | aaaaaaaaaa |
 
 
-  Scenario: Registration of a new user
-    Given the HTTP Request:
-          | Method | POST                                                 |
-          | Url    | /pocketcode/api/loginOrRegister/loginOrRegister.json |
-      And the POST parameters:
+  Scenario: New Registration of a new user
+    Given the next generated token will be "rrrrrrrrrrr"
+     When I POST the following parameters to "/pocketcode/api/loginOrRegister/loginOrRegister.json":
           | Name                 | Value                |
           | registrationUsername | newuser              |
           | registrationPassword | registrationpassword |
           | registrationEmail    | test@mail.com        |
           | registrationCountry  | at                   |
-      And we assume the next generated token will be "rrrrrrrrrrr"
-     When the Request is invoked
      Then the returned json object will be:
           """
           {
@@ -30,7 +26,7 @@ Feature: Authenticate to the system
             "preHeaderMessages": ""
           }
           """
-          
+
   Scenario Outline: Troubleshooting
     Given the registration problem "<problem>"
      When such a Request is invoked
@@ -48,15 +44,11 @@ Feature: Authenticate to the system
           | no password given | 602       | The password is missing. |
         
   Scenario: Retrieve the upload token of a user
-    Given the HTTP Request:
-          | Method | POST                                                 |
-          | Url    | /pocketcode/api/loginOrRegister/loginOrRegister.json |
-      And the POST parameters:
+      When I POST the following parameters to "/pocketcode/api/loginOrRegister/loginOrRegister.json":
           | name                 | value                 |
           | registrationUsername | Catrobat              |
           | registrationPassword | 12345                 |
-     When the Request is invoked
-     Then the returned json object will be:
+      Then the returned json object will be:
           """
           {
             "token": "cccccccccc",
@@ -66,14 +58,10 @@ Feature: Authenticate to the system
           """
 
   Scenario: Checking a given token for its validity
-    Given the HTTP Request:
-          | Method | POST                                  |
-          | Url    | /pocketcode/api/checkToken/check.json |
-      And the POST parameters:
+    When I POST the following parameters to "/pocketcode/api/checkToken/check.json":
           | Name     | Value      |
           | username | Catrobat   |
           | token    | cccccccccc |
-     When the Request is invoked
      Then the returned json object will be:
           """
           {

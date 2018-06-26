@@ -89,6 +89,18 @@ class FeatureContext extends BaseContext
     }
 
     /**
+     * @When /^I POST the following parameters to "([^"]*)":$/
+     */
+    public function iPostTheFollowingParametersTo($arg1, TableNode $table)
+    {
+        $this->method = 'POST';
+        $this->url = $arg1;
+        $values = $table->getRowsHash();
+        $this->post_parameters = $values;
+        $this->iInvokeTheRequest();
+    }
+
+    /**
      * @Then /^the returned json object will be:$/
      * @Then /^I will get the json object:$/
      */
@@ -194,6 +206,7 @@ class FeatureContext extends BaseContext
     
     /**
      * @Given /^we assume the next generated token will be "([^"]*)"$/
+     * @Given /^the next generated token will be "([^"]*)"$/
      */
     public function weAssumeTheNextGeneratedTokenWillBe($token)
     {
