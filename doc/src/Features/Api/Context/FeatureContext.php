@@ -233,10 +233,9 @@ class FeatureContext extends BaseContext
     }
     
     /**
-     * @Given /^the registration problem "([^"]*)"$/
-     * @Given /^there is a registration problem ([^"]*)$/
+     * @When /^there is a "([^"]*)" with the registration request$/
      */
-    public function thereIsARegistrationProblem($problem)
+    public function thereIsAWithTheRegistrationRequest($problem)
     {
         switch ($problem)
         {
@@ -249,13 +248,13 @@ class FeatureContext extends BaseContext
             default:
                 throw new PendingException("No implementation of case \"" . $problem . "\"");
         }
+        $this->iInvokeTheRequest();
     }
-    
+
     /**
-     * @Given /^the check token problem "([^"]*)"$/
-     * @When /^there is a check token problem ([^"]*)$/
+     * @When /^there is a "([^"]*)" with the check token request$/
      */
-    public function thereIsACheckTokenProblem($problem)
+    public function thereIsAWithTheCheckTokenRequest($problem)
     {
         switch ($problem)
         {
@@ -268,6 +267,7 @@ class FeatureContext extends BaseContext
             default:
                 throw new PendingException("No implementation of case \"" . $problem . "\"");
         }
+        $this->iInvokeTheRequest();
     }
     
     /**

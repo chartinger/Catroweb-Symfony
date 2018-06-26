@@ -33,9 +33,7 @@ Then the returned json object will be:
 ## Troubleshooting
 > 
 
-Given the registration problem "`<problem>`"
- 
-When such a Request is invoked
+When there is a "`<problem>`" with the registration request
  
 Then the returned json object will be:
 ```json
@@ -109,9 +107,7 @@ And the response code will be "`200`"
 ## Troubleshooting
 > 
 
-Given the check token problem "`<problem>`"
- 
-When such a Request is invoked
+When there is a "`<problem>`" with the check token request
  
 Then the returned json object will be:
 ```json

@@ -28,8 +28,7 @@ Feature: Authenticate to the system
           """
 
   Scenario Outline: Troubleshooting
-    Given the registration problem "<problem>"
-     When such a Request is invoked
+     When there is a "<problem>" with the registration request
      Then the returned json object will be:
           """
           {
@@ -73,8 +72,7 @@ Feature: Authenticate to the system
       And the response code will be "200"
 
   Scenario Outline: Troubleshooting
-    Given the check token problem "<problem>"
-     When such a Request is invoked
+     When there is a "<problem>" with the check token request
      Then the returned json object will be:
           """
           {
