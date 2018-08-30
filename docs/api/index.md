@@ -8,5 +8,7 @@
 
 * [Search programs](search.md)
 
+* [Listing allowed Tags](tagging.md)
+
 * [Upload a program to the website](upload.md)
 

@@ -1,7 +1,7 @@
 # Authenticate to the system
 > How to register and login to the system
 
-## New Registration of a new user
+## Registration of a new user
 > 
 
 Given the next generated token will be "`rrrrrrrrrrr`"

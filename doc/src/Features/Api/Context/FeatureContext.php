@@ -85,6 +85,7 @@ class FeatureContext extends BaseContext
      */
     public function iInvokeTheRequest()
     {
+        $request = 'https://' . $this->server_parameters['HTTP_HOST'] . $this->url . '?' . http_build_query($this->get_parameters);
         $this->getClient()->request($this->method, 'https://' . $this->server_parameters['HTTP_HOST'] . $this->url . '?' . http_build_query($this->get_parameters), $this->post_parameters, $this->files, $this->server_parameters);
     }
 
@@ -97,6 +98,19 @@ class FeatureContext extends BaseContext
         $this->url = $arg1;
         $values = $table->getRowsHash();
         $this->post_parameters = $values;
+        $this->iInvokeTheRequest();
+    }
+
+    /**
+     * @When /^I GET "([^"]*)" with parameters:$/
+     */
+    public function iGetWithParameters($arg1, TableNode $table)
+    {
+        $this->method = 'GET';
+        $this->url = $arg1;
+        $values = $table->getRowsHash();
+        array_shift($values);
+        $this->get_parameters = $values;
         $this->iInvokeTheRequest();
     }
 
@@ -176,6 +190,24 @@ class FeatureContext extends BaseContext
         }
     }
     
+    /**
+     * @Given /^there are tags:$/
+     */
+    public function thereAreTags(TableNode $table)
+    {
+        $tags = $table->getHash();
+
+        foreach($tags as $tag)
+        {
+            @$config = array(
+                'id' => $tag['id'],
+                'en' => $tag['en'],
+                'de' => $tag['de']
+            );
+            $this->insertTag($config);
+        }
+    }
+
     /**
      * @Given /^following programs are featured:$/
      */
@@ -312,6 +344,57 @@ class FeatureContext extends BaseContext
             default:
                 throw new PendingException("No implementation of case \"" . $problem . "\"");
         }
+    }
+
+    /**
+     * @Given /^the tags are requested without a language parameter$/
+     */
+    public function theTagsAreRequestedWithoutALanguageParameter()
+    {
+        $this->method = 'GET';
+        $this->url = '/pocketcode/api/tags/getTags.json';
+        $this->get_parameters = array();
+        $this->iInvokeTheRequest();
+    }
+
+    /**
+     * @Then /^the "([^"]*)" in the error JSON will be (\d+)$/
+     */
+    public function theStatuscodeInTheErrorJsonWillBe($param, $arg1)
+    {
+        $response = $this->getClient()->getResponse()->getContent();
+        $response = json_decode($response, true);
+        assertEquals($arg1, $response[$param]);
+    }
+
+    /**
+     * @Then /^the "([^"]*)" array will show the english tags\.$/
+     */
+    public function theConstanttagsArrayWillShowTheEnglishTags($arg1)
+    {
+        $response = $this->getClient()->getResponse()->getContent();
+        $response = json_decode($response, true);
+        assertEquals(array("Games","Story","Music","Art"), $response[$arg1]);
+    }
+
+    /**
+     * @When /^there is a "([^"]*)" with the tag request$/
+     */
+    public function thereIsAWithTheTagRequest($arg1)
+    {
+        switch ($arg1) {
+            case "no language given":
+                $this->get_parameters = array();
+                break;
+            case "unsupported language":
+                $this->get_parameters = array('language' => 'xx');
+                break;
+            default: 
+                throw new PendingException("No implementation of case \"" . $arg1 . "\"");
+        }
+        $this->method = 'GET';
+        $this->url = '/pocketcode/api/tags/getTags.json';
+        $this->iInvokeTheRequest();
     }
 
 }
