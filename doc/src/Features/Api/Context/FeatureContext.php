@@ -265,6 +265,29 @@ class FeatureContext extends BaseContext
     }
     
     /**
+     * @Given /^a valid catrobat program with the MD5 checksum "([^"]*)"$/
+     */
+    public function aValidCatrobatProgramWithTheMdChecksumOf($arg1)
+    {
+        $filepath = self::FIXTUREDIR . 'test.catrobat';
+        assertTrue(file_exists($filepath), 'File not found');
+        $this->files[] = new UploadedFile($filepath, 'test.catrobat');
+        assertEquals(md5_file($filepath), $arg1);
+    }
+
+    /**
+     * @When /^I upload the file to "([^"]*)" with POST paramters:$/
+     */
+    public function iUploadTheFileToWithPostParamters($arg1, TableNode $table)
+    {
+        $this->method = "POST";
+        $this->url = $arg1;
+        $values = $table->getRowsHash();
+        $this->post_parameters = $values;
+        $this->iInvokeTheRequest();
+    }
+    
+    /**
      * @When /^there is a "([^"]*)" with the registration request$/
      */
     public function thereIsAWithTheRegistrationRequest($problem)

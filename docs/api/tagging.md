@@ -1,4 +1,4 @@
-# Listing allowed Tags
+# Get a list of allowed tags
 > How to get a list of all supported tags for a program
 
 ## Get the available english tags

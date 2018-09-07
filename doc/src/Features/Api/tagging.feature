@@ -1,4 +1,4 @@
-Feature: Listing allowed Tags
+Feature: Get a list of allowed tags
   How to get a list of all supported tags for a program
 
 Background: 

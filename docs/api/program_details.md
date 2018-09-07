@@ -4,20 +4,12 @@
 ## Show program details with a given id
 > 
 
-Given the HTTP Request:
-
-| Method | GET |
-| --- | --- |
-| Url | /pocketcode/api/projects/getInfoById.json |
-   
-And the GET parameters:
+When I GET "`/pocketcode/api/projects/getInfoById.json`" with parameters:
 
 | Name | Value |
 | --- | --- |
 | id | 2 |
    
-When the Request is invoked
- 
 Then the returned json object will be:
 ```json
 {
@@ -57,20 +49,12 @@ Then the returned json object will be:
 ## Error if no program is found
 > 
 
-Given the HTTP Request:
-
-| Method | GET |
-| --- | --- |
-| Url | /pocketcode/api/projects/getInfoById.json |
-   
-And the GET parameters:
+When I GET "`/pocketcode/api/projects/getInfoById.json`" with parameters:
 
 | Name | Value |
 | --- | --- |
 | id | 9 |
    
-When the Request is invoked
- 
 Then the returned json object will be:
 ```json
 {

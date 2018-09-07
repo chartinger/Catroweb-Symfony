@@ -12,14 +12,10 @@ Feature: Show program details
   
   Scenario: Show program details with a given id
   
-    Given the HTTP Request:
-          | Method | GET                                       |
-          | Url    | /pocketcode/api/projects/getInfoById.json |
-      And the GET parameters:
-          | Name | Value |
-          | id   | 2     |
-     When the Request is invoked
-     Then the returned json object will be:
+    When I GET "/pocketcode/api/projects/getInfoById.json" with parameters:
+      | Name                 | Value           |
+      | id                   | 2               |
+    Then the returned json object will be:
       """
       {
           "completeTerm":"",
@@ -52,18 +48,14 @@ Feature: Show program details
       
   Scenario: Error if no program is found
   
-    Given the HTTP Request:
-          | Method | GET                                       |
-          | Url    | /pocketcode/api/projects/getInfoById.json |
-      And the GET parameters:
-          | Name | Value |
-          | id   | 9     |
-     When the Request is invoked
-     Then the returned json object will be:
-          """
-          {
-            "Error": "Project not found (uploaded)",
-            "preHeaderMessages": ""
-          }
-          """
+    When I GET "/pocketcode/api/projects/getInfoById.json" with parameters:
+      | Name                 | Value           |
+      | id                   | 9               |
+    Then the returned json object will be:
+        """
+        {
+          "Error": "Project not found (uploaded)",
+          "preHeaderMessages": ""
+        }
+        """
           

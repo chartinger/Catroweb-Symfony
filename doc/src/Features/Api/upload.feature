@@ -6,20 +6,15 @@ Feature: Upload a program to the website
       | name     | password | token      |
       | Catrobat | 12345    | cccccccccc |
       | User1    | vwxyz    | aaaaaaaaaa |
+    And we assume the next generated token will be "rrrrrrrrrrr"
 
   Scenario: Upload program
-    Given the HTTP Request:
-          | Method | POST                               |
-          | Url    | /pocketcode/api/upload/upload.json |
-      And the POST parameters:
-          | Name          | Value                  |
-          | username      | Catrobat               |
-          | token         | cccccccccc             |
-          | fileChecksum  | <md5 checksum of file> |
-      And a catrobat file is attached to the request
-      And the POST parameter "fileChecksum" contains the MD5 sum of the attached file
-      And we assume the next generated token will be "rrrrrrrrrrr"
-     When the Request is invoked
+    Given a valid catrobat program with the MD5 checksum "682432b25a2968260c9a307a751a6e16"
+    When I upload the file to "/pocketcode/api/upload/upload.json" with POST paramters:
+          | Name          | Value                            |
+          | username      | Catrobat                         |
+          | token         | cccccccccc                       |
+          | fileChecksum  | 682432b25a2968260c9a307a751a6e16 |
      Then the returned json object will be:
           """
           {

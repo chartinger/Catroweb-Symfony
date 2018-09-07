@@ -19,45 +19,41 @@ Feature: Search programs
 
   Scenario: Search for a program
   
-    Given the HTTP Request:
-          | Method | GET                                  |
-          | Url    | /pocketcode/api/projects/search.json |
-      And the GET parameters:
-          | Name   | Value  | 
-          | q      | Galaxy |
-          | limit  | 1      |
-          | offset | 0      |
-     When the Request is invoked
-     Then the returned json object will be:
-          """
-          {
-            "completeTerm": "",
-            "CatrobatInformation": {
-              "BaseUrl": "https://pocketcode.org/", 
-              "TotalProjects": 1,
-              "ProjectsExtension": ".catrobat"
-            },
-            "CatrobatProjects":[{
-              "ProjectId": 1,
-              "ProjectName": "Galaxy War",
-              "ProjectNameShort": "Galaxy War",
-              "ScreenshotBig": "images/default/screenshot.png",
-              "ScreenshotSmall": "images/default/thumbnail.png",
-              "Author": "User1",
-              "Description": "p1",
-              "Uploaded": 1357041600,
-              "UploadedString": "more than one year ago",
-              "Version": "0.8.5",
-              "Views": "12",
-              "Downloads": "3",
-              "Private": false,
-              "ProjectUrl": "pocketcode/program/1",
-              "DownloadUrl": "pocketcode/download/1.catrobat",
-              "FileSize": 0
-            }],
-            "preHeaderMessages":""
-          }
-          """
+    When I GET "/pocketcode/api/projects/search.json" with parameters:
+      | Name   | Value  | 
+      | q      | Galaxy |
+      | limit  | 1      |
+      | offset | 0      |
+    Then the returned json object will be:
+      """
+      {
+        "completeTerm": "",
+        "CatrobatInformation": {
+          "BaseUrl": "https://pocketcode.org/", 
+          "TotalProjects": 1,
+          "ProjectsExtension": ".catrobat"
+        },
+        "CatrobatProjects":[{
+          "ProjectId": 1,
+          "ProjectName": "Galaxy War",
+          "ProjectNameShort": "Galaxy War",
+          "ScreenshotBig": "images/default/screenshot.png",
+          "ScreenshotSmall": "images/default/thumbnail.png",
+          "Author": "User1",
+          "Description": "p1",
+          "Uploaded": 1357041600,
+          "UploadedString": "more than one year ago",
+          "Version": "0.8.5",
+          "Views": "12",
+          "Downloads": "3",
+          "Private": false,
+          "ProjectUrl": "pocketcode/program/1",
+          "DownloadUrl": "pocketcode/download/1.catrobat",
+          "FileSize": 0
+        }],
+        "preHeaderMessages":""
+      }
+      """
           
   Scenario: No programs are found
   

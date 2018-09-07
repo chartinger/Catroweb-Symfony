@@ -4,13 +4,7 @@
 ## Search for a program
 > 
 
-Given the HTTP Request:
-
-| Method | GET |
-| --- | --- |
-| Url | /pocketcode/api/projects/search.json |
-   
-And the GET parameters:
+When I GET "`/pocketcode/api/projects/search.json`" with parameters:
 
 | Name | Value |
 | --- | --- |
@@ -18,8 +12,6 @@ And the GET parameters:
 | limit | 1 |
 | offset | 0 |
    
-When the Request is invoked
- 
 Then the returned json object will be:
 ```json
 {
