@@ -6,7 +6,7 @@
 
 Given a valid catrobat program with the MD5 checksum "`682432b25a2968260c9a307a751a6e16`"
  
-When I upload the file to "`/pocketcode/api/upload/upload.json`" with POST paramters:
+When I upload the file to "`/pocketcode/api/upload/upload.json`" with POST parameters:
 
 | Name | Value |
 | --- | --- |

@@ -47,37 +47,6 @@ class FeatureContext extends BaseContext
     // ----------------------------------------------------------------
     
     /**
-     * @Given /^the HTTP Request:$/
-     * @Given /^I have the HTTP Request:$/
-     */
-    public function iHaveTheHttpRequest(TableNode $table)
-    {
-        $values = $table->getRowsHash();
-        $this->method = $values['Method'];
-        $this->url = $values['Url'];
-    }
-
-    /**
-     * @Given /^the POST parameters:$/
-     * @Given /^I use the POST parameters:$/
-     */
-    public function iUseThePostParameters(TableNode $table)
-    {
-        $values = $table->getRowsHash();
-        $this->post_parameters = $values;
-    }
-
-    /**
-     * @Given /^the GET parameters:$/
-     * @Given /^I use the GET parameters:$/
-     */
-    public function iUseTheGetParameters(TableNode $table)
-    {
-        $values = $table->getRowsHash();
-        $this->get_parameters = $values;
-    }
-    
-    /**
      * @When /^such a Request is invoked$/
      * @When /^a Request is invoked$/
      * @When /^the Request is invoked$/
@@ -115,6 +84,18 @@ class FeatureContext extends BaseContext
     }
 
     /**
+     * @When /^I upload the file to "([^"]*)" with POST parameters:$/
+     */
+    public function iUploadTheFileToWithPostParameters($arg1, TableNode $table)
+    {
+        $this->method = "POST";
+        $this->url = $arg1;
+        $values = $table->getRowsHash();
+        $this->post_parameters = $values;
+        $this->iInvokeTheRequest();
+    }
+
+    /**
      * @Then /^the returned json object will be:$/
      * @Then /^I will get the json object:$/
      */
@@ -141,6 +122,16 @@ class FeatureContext extends BaseContext
         $this->server_parameters = array('HTTP_HOST' => 'pocketcode.org', 'HTTPS' => true, 'SERVER_NAME' => 'asdsd.org');
     }
     
+    /**
+     * @Then /^the "([^"]*)" in the error JSON will be (\d+)$/
+     */
+    public function theStatuscodeInTheErrorJsonWillBe($param, $arg1)
+    {
+        $response = $this->getClient()->getResponse()->getContent();
+        $response = json_decode($response, true);
+        assertEquals($arg1, $response[$param]);
+    }
+
     // ----------------------------------------------------------------
     
     /**
@@ -246,24 +237,8 @@ class FeatureContext extends BaseContext
         $token_generator->setTokenGenerator(new FixedTokenGenerator($token));
     }
     
-    /**
-     * @Given /^a catrobat file is attached to the request$/
-     */
-    public function iAttachACatrobatFile()
-    {
-        $filepath = self::FIXTUREDIR . 'test.catrobat';
-        assertTrue(file_exists($filepath), 'File not found');
-        $this->files[] = new UploadedFile($filepath, 'test.catrobat');
-    }
+    // ----------------------------------------------------------------
 
-    /**
-     * @Given /^the POST parameter "([^"]*)" contains the MD5 sum of the attached file$/
-     */
-    public function thePostParameterContainsTheMdSumOfTheGivenFile($arg1)
-    {
-        $this->post_parameters[$arg1] = md5_file($this->files[0]->getPathname());
-    }
-    
     /**
      * @Given /^a valid catrobat program with the MD5 checksum "([^"]*)"$/
      */
@@ -275,18 +250,6 @@ class FeatureContext extends BaseContext
         assertEquals(md5_file($filepath), $arg1);
     }
 
-    /**
-     * @When /^I upload the file to "([^"]*)" with POST paramters:$/
-     */
-    public function iUploadTheFileToWithPostParamters($arg1, TableNode $table)
-    {
-        $this->method = "POST";
-        $this->url = $arg1;
-        $values = $table->getRowsHash();
-        $this->post_parameters = $values;
-        $this->iInvokeTheRequest();
-    }
-    
     /**
      * @When /^there is a "([^"]*)" with the registration request$/
      */
@@ -378,16 +341,6 @@ class FeatureContext extends BaseContext
         $this->url = '/pocketcode/api/tags/getTags.json';
         $this->get_parameters = array();
         $this->iInvokeTheRequest();
-    }
-
-    /**
-     * @Then /^the "([^"]*)" in the error JSON will be (\d+)$/
-     */
-    public function theStatuscodeInTheErrorJsonWillBe($param, $arg1)
-    {
-        $response = $this->getClient()->getResponse()->getContent();
-        $response = json_decode($response, true);
-        assertEquals($arg1, $response[$param]);
     }
 
     /**
