@@ -120,7 +120,7 @@ class EventListener implements EventSubscriberInterface
             $rendered = $this->templating->render($this->template, array(
                 'feature' => $feature,
             ));
-            $featurefile = new File($feature->getFile());
+            $featurefile = new File($feature->file);
             $filename = $featurefile->getBasename(".feature");
             file_put_contents($this->output_directory . "/" . $filename . "." . $this->extension, $rendered);
         }
@@ -158,9 +158,9 @@ class EventListener implements EventSubscriberInterface
             if (($this->scope == "feature") && ($this->index_filename != null)) {
                 $feature_overviews = array();
                 foreach ($this->features as $feature) {
-                    $featurefile = new File($feature->getFile());
+                    $featurefile = new File($feature->file);
                     $filename = $featurefile->getBasename(".feature") . "." . $this->extension;
-                    $feature_overviews[] = array('title' => $feature->getTitle(), 'filename' => $filename, 'description' => $feature->getDescription());
+                    $feature_overviews[] = array('title' => $feature->title, 'filename' => $filename, 'description' => $feature->description);
                 }
                 $rendered = $this->templating->render($this->index_template, array(
                     'features' => $feature_overviews

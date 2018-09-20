@@ -6,15 +6,16 @@ use Behat\Behat\EventDispatcher\Event\AfterOutlineTested;
 
 class OutlineScenario implements ScenarioInterface
 {
-    private $parameters;
 
-    private $examples;
+    public $parameters;
 
-    private $steps;
+    public $examples;
 
-    private $title;
+    public $steps;
 
-    private $result;
+    public $title;
+
+    public $result;
 
     public function __construct(AfterOutlineTested $event, $steps)
     {

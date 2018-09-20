@@ -4,11 +4,11 @@ namespace Catrobat\Behat\TwigReportExtension\facades;
 class Example
 {
 
-    private $result;
+    public $result;
 
-    private $parameters;
+    public $parameters;
 
-    private $steps;
+    public $steps;
 
     public function __construct($result, $parameters, $steps)
     {

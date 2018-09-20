@@ -5,9 +5,12 @@ use Behat\Behat\EventDispatcher\Event\AfterBackgroundTested;
 
 class Background
 {
-    private $steps;
-    private $title;
-    private $result;
+
+    public $steps;
+
+    public $title;
+
+    public $result;
 
     public function __construct(AfterBackgroundTested $event, $steps)
     {

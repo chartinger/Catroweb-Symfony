@@ -5,11 +5,12 @@ use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 
 class Scenario implements ScenarioInterface
 {
-    private $steps;
 
-    private $title;
+    public $steps;
 
-    private $result;
+    public $title;
+
+    public $result;
 
     public function __construct(AfterScenarioTested $event, $steps)
     {

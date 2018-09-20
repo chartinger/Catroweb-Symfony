@@ -7,19 +7,21 @@ use Behat\Testwork\Tester\Result\ExceptionResult;
 class Step implements StepInterface
 {
 
-    private $keyword;
+    public $keyword;
 
-    private $baseText;
+    public $baseText;
 
-    private $result;
+    public $result;
 
-    private $hasException;
+    public $hasException;
 
-    private $exception;
+    public $exception;
 
-    private $line;
+    public $line;
 
-    private $arguments;
+    public $arguments;
+
+    public $text;
 
     public function __construct(AfterStepTested $event)
     {
@@ -32,6 +34,7 @@ class Step implements StepInterface
         }
         $this->line = $event->getStep()->getLine();
         $this->arguments = $this->createArguments($event);
+        $this->text = $this->keyword . " " . $this->baseText;
     }
 
     public function getText()

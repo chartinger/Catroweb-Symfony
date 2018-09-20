@@ -6,28 +6,50 @@ use Behat\Gherkin\Node\StepNode;
 class OutlineStep implements StepInterface
 {
 
-    private $stepnode;
+    public $arguments;
+
+    public $keyword;
+
+    public $baseText;
+
+    public $result;
+
+    public $line;
 
     public function __construct(StepNode $step)
     {
-        $this->stepnode = $step;
+        $this->arguments = $this->createArguments($step);
+        $this->keyword = $step->getKeyword();
+        $this->baseText = $step->getText();
+        $this->result = -1;
+        $this->line = $step->getLine();
     }
 
     public function getText()
     {
-        return $this->stepnode->getKeyword() . " " . $this->stepnode->getText();
+        return $this->keyword . " " . $this->baseText;
     }
 
     public function getResult()
     {
-        return - 1;
+        return $this->result;
     }
 
     public function getArguments()
     {
+        return $this->arguments;
+    }
+
+    public function getLine()
+    {
+        return $line;
+    }
+
+    private function createArguments($stepnode)
+    {
         $arguments = array();
         
-        foreach ($this->stepnode->getArguments() as $argument) {
+        foreach ($stepnode->getArguments() as $argument) {
             $argument_array = array();
             $argument_array["type"] = $argument->getNodeType();
             switch ($argument->getNodeType()) {
@@ -42,10 +64,5 @@ class OutlineStep implements StepInterface
         }
         
         return $arguments;
-    }
-
-    public function getLine()
-    {
-        return $this->stepnode->getLine();
     }
 }

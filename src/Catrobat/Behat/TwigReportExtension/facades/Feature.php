@@ -5,15 +5,18 @@ use Behat\Behat\EventDispatcher\Event\AfterFeatureTested;
 
 class Feature
 {
-    private $scenarios;
 
-    private $background;
+    public $scenarios;
+
+    public $background;
     
-    private $file;
+    public $file;
 
-    private $title;
-    private $description;
-    private $result;
+    public $title;
+
+    public $description;
+
+    public $result;
 
     public function __construct(AfterFeatureTested $event, $scenarios, $background)
     {
