@@ -7,40 +7,68 @@ use Behat\Testwork\Tester\Result\ExceptionResult;
 class Step implements StepInterface
 {
 
-    private $event;
+    private $keyword;
+
+    private $baseText;
+
+    private $result;
+
+    private $hasException;
+
+    private $exception;
+
+    private $line;
+
+    private $arguments;
 
     public function __construct(AfterStepTested $event)
     {
-        $this->event = $event;
+        $this->keyword = $event->getStep()->getKeyword();
+        $this->baseText = $event->getStep()->getText();
+        $this->result = $event->getTestResult()->getResultCode();
+        $this->hasException = $event->getTestResult() instanceof ExceptionResult && $event->getTestResult()->getException();
+        if ($this->hasException) {
+            $this->exception = $event->getTestResult()->getException();
+        }
+        $this->line = $event->getStep()->getLine();
+        $this->arguments = $this->createArguments($event);
     }
 
     public function getText()
     {
-        return $this->event->getStep()->getKeyword() . " " . $this->event->getStep()->getText();
+        return $this->keyword . " " . $this->baseText;
     }
 
     public function getResult()
     {
-        return $this->event->getTestResult()->getResultCode();
+        return $this->result; 
     }
 
     private function hasException()
     {
-        return $this->event->getTestResult() instanceof ExceptionResult && $this->event->getTestResult()->getException();
+        return $this->hasException;
     }
 
     public function getException()
     {
-        if ($this->hasException()) {
-            return $this->event->getTestResult()->getException();
-        }
+        return $this->exception;
     }
 
     public function getArguments()
     {
+        return $this->arguments;
+    }
+
+    public function getLine()
+    {
+        return $this->line;
+    }
+
+    private function createArguments($event)
+    {
         $arguments = array();
         
-        foreach ($this->event->getStep()->getArguments() as $argument) {
+        foreach ($event->getStep()->getArguments() as $argument) {
             $argument_array = array();
             $argument_array["type"] = $argument->getNodeType();
             switch ($argument->getNodeType()) {
@@ -57,8 +85,4 @@ class Step implements StepInterface
         return $arguments;
     }
 
-    public function getLine()
-    {
-        return $this->event->getStep()->getLine();
-    }
 }

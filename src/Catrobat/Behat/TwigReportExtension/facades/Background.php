@@ -5,21 +5,21 @@ use Behat\Behat\EventDispatcher\Event\AfterBackgroundTested;
 
 class Background
 {
-
-    private $event;
-
     private $steps;
+    private $title;
+    private $result;
 
     public function __construct(AfterBackgroundTested $event, $steps)
     {
-        $this->event = $event;
         $num_steps = count($event->getBackground()->getSteps());
         $this->steps = array_slice($steps, - $num_steps);
+        $this->title = $event->getBackground()->getTitle();
+        $this->result = $event->getTestResult()->getResultCode();
     }
 
     public function getTitle()
     {
-        $this->event->getBackground()->getTitle();
+        $this->title;
     }
 
     public function getSteps()
@@ -29,6 +29,6 @@ class Background
 
     public function getResult()
     {
-        return $this->event->getTestResult()->getResultCode();
+        return $this->result;
     }
 }

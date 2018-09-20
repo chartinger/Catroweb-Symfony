@@ -6,18 +6,18 @@ use Behat\Behat\EventDispatcher\Event\AfterOutlineTested;
 
 class OutlineScenario implements ScenarioInterface
 {
-
-    private $event;
-
     private $parameters;
 
     private $examples;
 
     private $steps;
 
+    private $title;
+
+    private $result;
+
     public function __construct(AfterOutlineTested $event, $steps)
     {
-        $this->event = $event;
         if (count($event->getOutline()
             ->getExampleTable()
             ->getTable()) > 0) {
@@ -27,8 +27,10 @@ class OutlineScenario implements ScenarioInterface
         } else {
             $this->parameters = array();
         }
-        $this->generateExamples($steps);
-        $this->generateSteps();
+        $this->generateExamples($event, $steps);
+        $this->generateSteps($event);
+        $this->title = $event->getOutline()->getTitle();
+        $this->result = $event->getTestResult()->getResultCode();
     }
 
     public function getSteps()
@@ -43,12 +45,12 @@ class OutlineScenario implements ScenarioInterface
 
     public function getTitle()
     {
-        return $this->event->getOutline()->getTitle();
+        return $this->title;
     }
 
     public function getResult()
     {
-        return $this->event->getTestResult()->getResultCode();
+        return $this->result;
     }
 
     public function getParameters()
@@ -61,10 +63,10 @@ class OutlineScenario implements ScenarioInterface
         return $this->examples;
     }
 
-    private function generateExamples($steps)
+    private function generateExamples($event, $steps)
     {
-        $example_nodes = $this->event->getOutline()->getExamples();
-        $example_value_table = $this->event->getOutline()->getExampleTable();
+        $example_nodes = $event->getOutline()->getExamples();
+        $example_value_table = $event->getOutline()->getExampleTable();
         
         $step_counter = 0;
         $example_counter = 0;
@@ -90,10 +92,10 @@ class OutlineScenario implements ScenarioInterface
         $this->examples = $example_results;
     }
 
-    private function generateSteps()
+    private function generateSteps($event)
     {
         $this->steps = array();
-        foreach ($this->event->getOutline()->getSteps() as $stepnode) {
+        foreach ($event->getOutline()->getSteps() as $stepnode) {
             $this->steps[] = new OutlineStep($stepnode);
         }
     }

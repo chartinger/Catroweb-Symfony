@@ -5,35 +5,39 @@ use Behat\Behat\EventDispatcher\Event\AfterFeatureTested;
 
 class Feature
 {
-
-    private $event;
-
     private $scenarios;
 
     private $background;
     
     private $file;
 
+    private $title;
+    private $description;
+    private $result;
+
     public function __construct(AfterFeatureTested $event, $scenarios, $background)
     {
-        $this->event = $event;
         $this->scenarios = $scenarios;
         $this->background = $background;
+        $this->title = $event->getFeature()->getTitle();
+        $this->description = $event->getFeature()->getDescription();
+        $this->result = $event->getTestResult()->getResultCode();
+        $this->file = $event->getFeature()->getFile();
     }
 
     public function getTitle()
     {
-        return $this->event->getFeature()->getTitle();
+        return $this->title;
     }
 
     public function getDescription()
     {
-        return $this->event->getFeature()->getDescription();
+        return $this->description;
     }
 
     public function getResult()
     {
-        return $this->event->getTestResult()->getResultCode();
+        return $this->result;
     }
 
     public function getScenarios()
@@ -48,6 +52,6 @@ class Feature
 
     public function getFile()
     {
-        return $this->event->getFeature()->getFile();
+        return $this->file;
     }
 }

@@ -5,25 +5,27 @@ use Behat\Behat\EventDispatcher\Event\AfterScenarioTested;
 
 class Scenario implements ScenarioInterface
 {
-
-    private $event;
-
     private $steps;
+
+    private $title;
+
+    private $result;
 
     public function __construct(AfterScenarioTested $event, $steps)
     {
-        $this->event = $event;
         $this->steps = $steps;
+        $this->title = $event->getScenario()->getTitle(); 
+        $this->result = $event->getTestResult()->getResultCode();
     }
 
     public function getTitle()
     {
-        return $this->event->getScenario()->getTitle();
+        return $this->title;
     }
 
     public function getResult()
     {
-        return $this->event->getTestResult()->getResultCode();
+        return $this->result;
     }
 
     public function getSteps()
