@@ -333,7 +333,7 @@ class FeatureContext extends BaseContext
     }
 
     /**
-     * @Given /^the tags are requested without a language parameter$/
+     * @When /^the tags are requested without a language parameter$/
      */
     public function theTagsAreRequestedWithoutALanguageParameter()
     {

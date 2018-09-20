@@ -31,7 +31,7 @@ Then the returned json object will be:
 ## No language parameters
 > 
 
-Given the tags are requested without a language parameter
+When the tags are requested without a language parameter
  
 Then the "`statusCode`" in the error JSON will be 404
  

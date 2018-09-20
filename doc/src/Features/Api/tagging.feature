@@ -27,7 +27,7 @@ Scenario: Get the available english tags
       """
 
 Scenario: No language parameters
-  Given the tags are requested without a language parameter
+  When the tags are requested without a language parameter
   Then the "statusCode" in the error JSON will be 404
   And the "constantTags" array will show the english tags.
 
