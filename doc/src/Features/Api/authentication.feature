@@ -7,10 +7,9 @@ Feature: Authenticate to the system
       | name     | password | token      |
       | Catrobat | 12345    | cccccccccc |
       | User1    | vwxyz    | aaaaaaaaaa |
-
+    And the next generated token will be "rrrrrrrrrrr"
 
   Scenario: Registration of a new user
-    Given the next generated token will be "rrrrrrrrrrr"
      When I POST the following parameters to "/pocketcode/api/loginOrRegister/loginOrRegister.json":
           | Name                 | Value                |
           | registrationUsername | newuser              |

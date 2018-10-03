@@ -44,6 +44,12 @@ class FeatureContext extends BaseContext
         parent::__construct();
     }
     
+    protected function getResponseJSON()
+    {
+        $response = $this->getClient()->getResponse()->getContent();
+        return json_decode($response, true);
+    }
+
     // ----------------------------------------------------------------
     
     /**
@@ -127,8 +133,7 @@ class FeatureContext extends BaseContext
      */
     public function theStatuscodeInTheErrorJsonWillBe($param, $arg1)
     {
-        $response = $this->getClient()->getResponse()->getContent();
-        $response = json_decode($response, true);
+        $response = $this->getResponseJSON();
         assertEquals($arg1, $response[$param]);
     }
 
@@ -348,8 +353,7 @@ class FeatureContext extends BaseContext
      */
     public function theConstanttagsArrayWillShowTheEnglishTags($arg1)
     {
-        $response = $this->getClient()->getResponse()->getContent();
-        $response = json_decode($response, true);
+        $response = $this->getResponseJSON();
         assertEquals(array("Games","Story","Music","Art"), $response[$arg1]);
     }
 
